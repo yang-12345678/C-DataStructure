@@ -46,6 +46,20 @@ Status GetElem(SqList L, int i, ElemType &e) {
     return OK;
 }
 
+/**
+ * 查找元素
+ * @param L 顺序表
+ * @param e 待查找元素
+ * @return e 的索引，否则返回 0
+ */
+int LocateElem(SqList L, ElemType e) {
+    // 返回与 e 相等元素的索引
+    for (int i = 0; i < L.length; i++)
+        if (L.elem[i] == e) return i+1;
+    // 没有找到
+    return 0;
+}
+
 int main() {
     return 0;
 }
