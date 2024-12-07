@@ -2,9 +2,7 @@
 #include "predefine.h"
 using namespace std;
 
-
 long MAXSIZE = 100;
-
 
 typedef struct {
     ElemType *elem; // 存储空间的基地址
@@ -12,8 +10,8 @@ typedef struct {
 } SqList;
 
 /**
- * 初始化空的线性表
- * @param L 线性表的引用
+ * 初始化空的顺序表
+ * @param L 顺序表的引用
  * @return 状态码
  */
 Status InitList(SqList &L) {
