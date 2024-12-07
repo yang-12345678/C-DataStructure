@@ -48,7 +48,7 @@ Status IncreamentList(SqList &L) {
  * @param i 索引
  * @return
  */
-int GetElem(SqList L, int i) {
+ElemType GetElem(SqList L, int i) {
     // 检查 i 是否合理
     if (i < 1 || i > L.length)
         return ERROR;

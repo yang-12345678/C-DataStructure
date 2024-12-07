@@ -22,6 +22,26 @@ Status InitList(LinkList &L) {
   return OK;
 }
 
+/**
+ * 获取值
+ * @param L 单链表
+ * @param i 第几个元素
+ * @return 值
+ */
+ElemType GetElem(LinkList &L, int i) {
+  LinkList p = L->next;
+  int j = 1;
+  while (p && j < i) {
+    p = p->next;
+    ++j;
+  }
+
+  // p 为空，说明遍历到底也没有找到，可能 i > n
+  // while 结束最大也只是 j==i,如果 j > i 说明 i<=0
+  if (!p || j > i) return ERROR;
+  return p -> data;
+}
+
 int main() {
   return 0;
 }
