@@ -1,18 +1,10 @@
-#include "iostream"
+#include <iostream>
+#include "predefine.h"
 using namespace std;
 
-#define INCREMENT 1  // 扩容一倍
-#define TRUE 1
-#define FALSE 0
-#define OK 1
-#define ERROR 0
-#define INFEASIBLE -1
-#define OVERFLOW -2
 
 long MAXSIZE = 100;
 
-typedef int Status;
-typedef int ElemType;
 
 typedef struct {
     ElemType *elem; // 存储空间的基地址
@@ -124,6 +116,7 @@ Status ListTraverse(SqList &L) {
         L.elem[i] = L.elem[j];
         L.elem[j] = tmp;
     }
+    return OK;
 }
 
 void printList(SqList L) {
