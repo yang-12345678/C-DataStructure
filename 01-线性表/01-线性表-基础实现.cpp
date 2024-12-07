@@ -79,7 +79,7 @@ int LocateElem(SqList L, ElemType e) {
 }
 
 /**
- * 插入元素
+ * 插入元素: O(n)
  * @param L 顺序表
  * @param i 插入第几个位置
  * @param e 插入元素
@@ -97,7 +97,21 @@ Status ListInsert(SqList &L, int i, ElemType e) {
     L.elem[i - 1] = e;
     ++L.length;
     return OK;
+}
 
+/**
+ * 删除元素: O(n)
+ * @param L 顺序表
+ * @param i 元素索引
+ * @return 状态码
+ */
+Status ListDelete(SqList &L, int i) {
+    if (i < 1 || i > L.length) return ERROR;
+
+    for (int j = i; j < L.length; j++)
+        L.elem[j-1] = L.elem[j];
+    --L.length;
+    return OK;
 }
 
 void printList(SqList L) {
@@ -116,18 +130,18 @@ int main() {
     printList(L);
     cout << L.length << endl;
 
-    int n = LocateElem(L,4);
+    int n = LocateElem(L, 4);
     int elem = GetElem(L, 4);
-    cout <<n << endl;
-    cout <<elem << endl;
-
-
+    cout << n << endl;
+    cout << elem << endl;
 
 
     ListInsert(L, 3, 3);
     printList(L);
     cout << L.length << endl;
 
+    ListDelete(L, 3);
+    printList(L);
 
     return 0;
 }
