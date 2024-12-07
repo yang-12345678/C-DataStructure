@@ -1,7 +1,6 @@
 #include "iostream"
 using namespace std;
 
-#define MAXSIZE 4
 #define INCREMENT 1  // 扩容一倍
 #define TRUE 1
 #define FALSE 0
@@ -9,6 +8,8 @@ using namespace std;
 #define ERROR 0
 #define INFEASIBLE -1
 #define OVERFLOW -2
+
+long MAXSIZE = 100;
 
 typedef int Status;
 typedef int ElemType;
@@ -39,7 +40,8 @@ Status InitList(SqList &L) {
 Status IncreamentList(SqList &L) {
     SqList tmp = L;
 
-    L.elem = new ElemType[MAXSIZE * (1 + INCREMENT)];
+    MAXSIZE = MAXSIZE * (1 + INCREMENT);
+    L.elem = new ElemType[MAXSIZE];
     if (!L.elem) exit(OVERFLOW);
 
     for (int i = 0; i < tmp.length; i++) {
@@ -109,9 +111,19 @@ Status ListDelete(SqList &L, int i) {
     if (i < 1 || i > L.length) return ERROR;
 
     for (int j = i; j < L.length; j++)
-        L.elem[j-1] = L.elem[j];
+        L.elem[j - 1] = L.elem[j];
     --L.length;
     return OK;
+}
+
+Status ListTraverse(SqList &L) {
+    for (int i = 0, j = L.length - 1; i < L.length; i++, j--) {
+        if (j - i <= 1) return OK;
+
+        int tmp = L.elem[i];
+        L.elem[i] = L.elem[j];
+        L.elem[j] = tmp;
+    }
 }
 
 void printList(SqList L) {
@@ -141,6 +153,13 @@ int main() {
     cout << L.length << endl;
 
     ListDelete(L, 3);
+    printList(L);
+
+    ListInsert(L, 3, 3);
+    ListInsert(L, 6, 6);
+    printList(L);
+
+    ListTraverse(L);
     printList(L);
 
     return 0;
