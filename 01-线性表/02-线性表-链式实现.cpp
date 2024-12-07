@@ -48,7 +48,7 @@ ElemType GetElem(LinkList &L, int i) {
  * @param e 值
  * @return 找到返回节点的地址值，找不到返回 NULL
  */
-LNode * CreateList(LinkList &L, ElemType e) {
+LinkList LocateElem(LinkList &L, ElemType e) {
     LinkList p = L->next;
     while (p && p->data != e) {
         p = p->next;
@@ -57,6 +57,61 @@ LNode * CreateList(LinkList &L, ElemType e) {
     return p;
 }
 
+/**
+ * 插入元素
+ * @param L 单链表
+ * @param i 插入位置
+ * @param e 插入值
+ * @return 状态码
+ */
+Status ListInsert(LinkList &L, int i, ElemType e) {
+    LinkList p = L;  // 哨兵是第 0 个节点，插入第一个位置，找到它的前一个结点就是第 0 个节点
+    int j = 0;
+    while (p && j < i-1) {
+        p = p->next;
+        j++;
+    }
+    if (!p || j > i - 1) return ERROR;  // j 最多找到 i - 1 位置
+    LNode *s = new LNode;
+    s->data = e;
+    s->next = p->next;
+    p->next = s;
+    return OK;
+
+
+}
+
+void printList(LinkList L) {
+    LinkList p = L->next;
+    while (p) {
+        cout << p->data << " ";
+        p = p->next;
+    }
+    cout << endl;
+}
+
 int main() {
+
+    LinkList L;
+    InitList(L);
+
+
+    ListInsert(L, 1, 1);
+    ListInsert(L, 2, 2);
+    ListInsert(L, 3, 4);
+    ListInsert(L, 4, 5);
+    printList(L);
+
+    ListInsert(L, 3, 3);
+    printList(L);
+
+    ElemType elem = GetElem(L, 3);
+    cout << elem << endl;
+
+    LinkList n = LocateElem(L, 5);
+    cout << n->data << endl;
+
+
+
     return 0;
 }
