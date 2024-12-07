@@ -1,7 +1,8 @@
 #include "iostream"
 using namespace std;
 
-#define MAXSIZE 100
+#define MAXSIZE 4
+#define INCREMENT 1  // 扩容一倍
 #define TRUE 1
 #define FALSE 0
 #define OK 1
@@ -31,23 +32,40 @@ Status InitList(SqList &L) {
 }
 
 /**
- * 顺序表的取值
- * @param L 顺序表
- * @param i 索引
- * @param e 值
+ * 扩容顺序表
+ * @param L
  * @return
  */
-Status GetElem(SqList L, int i, ElemType &e) {
-    // 检查 i 是否合理
-    if (i < 1 || i > L.length)
-        return ERROR;
+Status IncreamentList(SqList &L) {
+    SqList tmp = L;
 
-    e = L.elem[i - 1];
+    L.elem = new ElemType[MAXSIZE * (1 + INCREMENT)];
+    if (!L.elem) exit(OVERFLOW);
+
+    for (int i = 0; i < tmp.length; i++) {
+        L.elem[i] = tmp.elem[i];
+    }
+    L.length = tmp.length;
+    cout << "扩容了" << endl;
     return OK;
 }
 
 /**
- * 查找元素
+ * 顺序表的取值: O(1)
+ * @param L 顺序表
+ * @param i 索引
+ * @return
+ */
+int GetElem(SqList L, int i) {
+    // 检查 i 是否合理
+    if (i < 1 || i > L.length)
+        return ERROR;
+
+    return L.elem[i - 1];
+}
+
+/**
+ * 查找元素: O(n)
  * @param L 顺序表
  * @param e 待查找元素
  * @return e 的索引，否则返回 0
@@ -55,12 +73,61 @@ Status GetElem(SqList L, int i, ElemType &e) {
 int LocateElem(SqList L, ElemType e) {
     // 返回与 e 相等元素的索引
     for (int i = 0; i < L.length; i++)
-        if (L.elem[i] == e) return i+1;
+        if (L.elem[i] == e) return i + 1;
     // 没有找到
     return 0;
 }
 
+/**
+ * 插入元素
+ * @param L 顺序表
+ * @param i 插入第几个位置
+ * @param e 插入元素
+ * @return 状态码
+ */
+Status ListInsert(SqList &L, int i, ElemType e) {
+    if (i < 1 || i > L.length + 1) return ERROR; // 不合法
+
+    if (L.length == MAXSIZE) {
+        IncreamentList(L);
+    }
+
+    for (int j = L.length - 1; j >= i - 1; j--)
+        L.elem[j + 1] = L.elem[j];
+    L.elem[i - 1] = e;
+    ++L.length;
+    return OK;
+
+}
+
+void printList(SqList L) {
+    for (int i = 0; i < L.length; i++)
+        cout << L.elem[i] << " ";
+    cout << endl;
+}
 
 int main() {
+    SqList L;
+    InitList(L);
+    ListInsert(L, 1, 1);
+    ListInsert(L, 2, 2);
+    ListInsert(L, 3, 4);
+    ListInsert(L, 4, 5);
+    printList(L);
+    cout << L.length << endl;
+
+    int n = LocateElem(L,4);
+    int elem = GetElem(L, 4);
+    cout <<n << endl;
+    cout <<elem << endl;
+
+
+
+
+    ListInsert(L, 3, 3);
+    printList(L);
+    cout << L.length << endl;
+
+
     return 0;
 }
