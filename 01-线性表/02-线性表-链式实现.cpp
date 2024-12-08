@@ -58,28 +58,65 @@ LinkList LocateElem(LinkList &L, ElemType e) {
 }
 
 /**
- * 插入元素
+ * 插入元素: O(n)
  * @param L 单链表
  * @param i 插入位置
  * @param e 插入值
  * @return 状态码
  */
 Status ListInsert(LinkList &L, int i, ElemType e) {
-    LinkList p = L;  // 哨兵是第 0 个节点，插入第一个位置，找到它的前一个结点就是第 0 个节点
+    LinkList p = L; // 哨兵是第 0 个节点，插入第一个位置，找到它的前一个结点就是第 0 个节点
     int j = 0;
-    while (p && j < i-1) {
+    while (p && j < i - 1) {
         p = p->next;
         j++;
     }
-    if (!p || j > i - 1) return ERROR;  // j 最多找到 i - 1 位置
+    if (!p || j > i - 1) return ERROR; // j 最多找到 i - 1 位置
     LNode *s = new LNode;
     s->data = e;
     s->next = p->next;
     p->next = s;
     return OK;
-
-
 }
+
+/**
+ * 删除元素: O(n)
+ * @param L 单链表
+ * @param i 删除索引
+ * @return 状态码
+ */
+Status ListDelete(LinkList &L, int i) {
+    LinkList p = L;
+    int j = 0;
+    while (p->next && j < i - 1) {
+        p = p->next;
+        j++;
+    }
+
+    if (!p->next || j > i - 1) return ERROR;
+    LinkList q = p->next;
+    p->next = q->next;
+    delete q;
+    return OK;
+}
+
+/**
+ * 头插法: O(n)
+ * @param L 单链表
+ * @param n 插入元素的个数
+ */
+void CreateList(LinkList &L, int n) {
+
+    for (int i = 0; i < n; ++i) {
+        LinkList p = new LNode;
+        cout << "请输入要插入的值 " << i + 1 << ": ";
+        cin >> p->data;
+        p->next = L->next;
+        L->next = p;
+    }
+}
+
+// 尾插法需要一个尾指针指向尾节点或找到最后一个节点（成本高）: O(n)
 
 void printList(LinkList L) {
     LinkList p = L->next;
@@ -91,7 +128,6 @@ void printList(LinkList L) {
 }
 
 int main() {
-
     LinkList L;
     InitList(L);
 
@@ -111,6 +147,11 @@ int main() {
     LinkList n = LocateElem(L, 5);
     cout << n->data << endl;
 
+    ListDelete(L, 3);
+    printList(L);
+
+    CreateList(L, 5);
+    printList(L);
 
 
     return 0;
